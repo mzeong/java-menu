@@ -1,35 +1,51 @@
 package menu.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import menu.util.RandomNumberGenerator;
 
 public class Coach {
     private final String name;
     private final ExcludeMenus excludeMenu;
-    private final RandomNumberGenerator randomNumberGenerator;
-    public Set<String> menus = new HashSet<>();
+    private final List<String> menus = new ArrayList<>();
 
-    public Coach(String name, ExcludeMenus excludeMenu, RandomNumberGenerator randomNumberGenerator) {
+    public Coach(String name, ExcludeMenus excludeMenu) {
         this.name = name;
         this.excludeMenu = excludeMenu;
-        this.randomNumberGenerator = randomNumberGenerator;
     }
 
-    public void selectMenu(Category category) {
+    public void recommend(Category category, RandomNumberGenerator randomNumberGenerator) {
         String menuName;
         do {
             menuName = randomNumberGenerator.shuffle(category);
-        } while (isUnselectable(menuName) || !menus.add(menuName));
+        } while (isInvalid(menuName));
+        menus.add(menuName);
     }
 
-    private boolean isUnselectable(String menuName) {
-        return excludeMenu.isUnselectable(menuName);
+    private boolean isInvalid(String target) {
+        long excludeCount = excludeMenu.getExcludeMenus().stream()
+                .filter(menu -> Objects.equals(menu.getName(), target))
+                .count();
+        if (excludeCount > 0) {
+            return false;
+        }
+
+        long alreadyCount = menus.stream()
+                .filter(menuName -> Objects.equals(menuName, target))
+                .count();
+        return alreadyCount > 0;
     }
 
-    @Override
-    public String toString() {
-        return String.format("[ 카테고리 | %s ]",
-                String.join(" | ", menus));
+    public String getName() {
+        return name;
+    }
+
+    public ExcludeMenus getExcludeMenu() {
+        return excludeMenu;
+    }
+
+    public List<String> getMenus() {
+        return menus;
     }
 }
