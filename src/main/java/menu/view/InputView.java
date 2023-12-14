@@ -8,7 +8,7 @@ public class InputView {
         return Console.readLine();
     }
 
-    public String inputExcludeMenu(String name) {
+    public String inputExcludeMenus(String name) {
         System.out.printf("%s(이)가 못 먹는 메뉴를 입력해 주세요.", name);
         System.out.println();
         return Console.readLine();

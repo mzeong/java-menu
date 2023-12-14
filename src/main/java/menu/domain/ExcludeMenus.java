@@ -25,4 +25,9 @@ public class ExcludeMenus {
             throw new IllegalArgumentException("메뉴는 최소 0개, 최대 2개로 입력해야 합니다.");
         }
     }
+
+    public boolean isUnselectable(String menuName) {
+        return excludeMenus.stream()
+                .anyMatch(menu -> menu.isSame(menuName));
+    }
 }

@@ -19,13 +19,10 @@ public class Parser {
         if (input == null || input.trim().isEmpty()) {
             return List.of();
         }
-        try {
-            return Arrays.stream(input.split(DELIMITER))
-                    .map(String::trim)
-                    .map(Menu::valueOf)
-                    .collect(Collectors.toList());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("존재하는 메뉴만 입력해야 합니다.");
-        }
+        return Arrays.stream(input.split(DELIMITER))
+                .map(String::trim)
+                .filter(menu -> !menu.isEmpty())
+                .map(Menu::getByName)
+                .collect(Collectors.toList());
     }
 }
