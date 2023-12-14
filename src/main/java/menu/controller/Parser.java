@@ -9,19 +9,28 @@ public class Parser {
     public static final String DELIMITER = ",";
 
     public List<String> parseCoachNames(String input) {
-        return Arrays.stream(input.split(DELIMITER))
+        List<String> list = Arrays.stream(input.split(DELIMITER))
                 .map(String::trim)
-                .filter(name -> !name.isEmpty())
+                .filter(str -> !str.isEmpty())
                 .collect(Collectors.toList());
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("입력이 없거나 쉼표나 공백으로만 구성됨");
+        }
+        return list;
     }
 
     public List<Menu> parseExcludeMenus(String input) {
-        if (input == null || input.trim().isEmpty()) {
+        if (input.trim().isEmpty()) {
             return List.of();
         }
-        return Arrays.stream(input.split(DELIMITER))
+        List<String> list = Arrays.stream(input.split(DELIMITER))
                 .map(String::trim)
-                .filter(menu -> !menu.isEmpty())
+                .filter(str -> !str.isEmpty())
+                .collect(Collectors.toList());
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("입력이 없거나 쉼표나 공백으로만 구성됨");
+        }
+        return list.stream()
                 .map(Menu::getByName)
                 .collect(Collectors.toList());
     }

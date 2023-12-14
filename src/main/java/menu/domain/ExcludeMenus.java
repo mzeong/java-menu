@@ -26,8 +26,7 @@ public class ExcludeMenus {
         }
     }
 
-    public boolean isUnselectable(String menuName) {
-        return excludeMenus.stream()
-                .anyMatch(menu -> menu.isSame(menuName));
+    public List<Menu> getExcludeMenus() {
+        return excludeMenus;
     }
 }
