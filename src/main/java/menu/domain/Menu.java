@@ -34,6 +34,16 @@ public enum Menu {
     토마토_달걀볶음(Category.중식, "토마토 달걀볶음"),
     고추잡채(Category.중식, "고추잡채"),
 
+    팟타이(Category.아시안, "팟타이"),
+    카오_팟(Category.아시안, "카오 팟"),
+    나시고렝(Category.아시안, "나시고렝"),
+    파인애플_볶음밥(Category.아시안, "파인애플 볶음밥"),
+    쌀국수(Category.아시안, "쌀국수"),
+    똠얌꿍(Category.아시안, "똠얌꿍"),
+    반미(Category.아시안, "반미"),
+    월남쌈(Category.아시안, "월남쌈"),
+    분짜(Category.아시안, "분짜"),
+
     라자냐(Category.양식, "라자냐"),
     그라탱(Category.양식, "그라탱"),
     뇨끼(Category.양식, "뇨끼"),
@@ -52,13 +62,6 @@ public enum Menu {
         this.name = name;
     }
 
-    public static List<String> getMenusInCategory(Category category) {
-        return Arrays.stream(Menu.values())
-                .filter(menu -> menu.category == category)
-                .map(menu -> menu.name)
-                .collect(Collectors.toList());
-    }
-
     public static Menu getByName(String name) {
         return Arrays.stream(Menu.values())
                 .filter(menu -> Objects.equals(menu.name, name))
@@ -66,7 +69,18 @@ public enum Menu {
                 .orElseThrow(() -> new IllegalArgumentException("존재하는 메뉴를 입력해야 합니다."));
     }
 
-    public boolean isSame(String name) {
-        return Objects.equals(this.name, name);
+    public static List<String> getMenusInCategory(Category category) {
+        return Arrays.stream(Menu.values())
+                .filter(menu -> menu.category == category)
+                .map(menu -> menu.name)
+                .collect(Collectors.toList());
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getName() {
+        return name;
     }
 }
