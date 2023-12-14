@@ -1,9 +1,11 @@
 package menu.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import menu.domain.Calculator;
 import menu.domain.Coach;
 import menu.domain.ExcludeMenus;
-import menu.domain.Menu;
+import menu.util.RandomNumberGenerator;
 import menu.view.InputView;
 import menu.view.OutputView;
 
@@ -19,12 +21,22 @@ public class Controller {
         this.parser = parser;
     }
 
-    public void init() {
+    public void run() {
+        outputView.printStartMessage();
         List<String> coachNames = getCoachNames();
+        List<Coach> coaches = new ArrayList<>();
         for (String name : coachNames) {
-            ExcludeMenus excludeMenus = getExcludeMenus(name);
-            Coach coach = new Coach(name, excludeMenus);
+            coaches.add(new Coach(name, getExcludeMenus(name)));
         }
+
+        Calculator calculator = new Calculator(coaches, new RandomNumberGenerator());
+        calculator.recommendWeek();
+        outputView.printWeek(calculator.getWeek());
+        outputView.printCategories(calculator.getCategories());
+        for (Coach coach : coaches) {
+            outputView.printMenus(coach);
+        }
+
     }
 
     private List<String> getCoachNames() {
@@ -40,8 +52,7 @@ public class Controller {
     private ExcludeMenus getExcludeMenus(String name) {
         while (true) {
             try {
-                List<Menu> menus = parser.parseExcludeMenus(inputView.inputExcludeMenus(name));
-                return new ExcludeMenus(menus);
+                return new ExcludeMenus(parser.parseExcludeMenus(inputView.inputExcludeMenus(name)));
             } catch (IllegalArgumentException e) {
                 System.out.println(ERR_PREFIX + e.getMessage());
             }
