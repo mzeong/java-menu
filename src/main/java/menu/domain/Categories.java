@@ -13,17 +13,17 @@ public class Categories {
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
-    public Category selectNew() {
+    public Category selectCategory() {
         Category category;
         do {
             category = Category.getByOrder(randomNumberGenerator.generate());
-        } while (isAllSelected(category));
+        } while (isUnselectable(category));
 
         categories.add(category);
         return category;
     }
 
-    private boolean isAllSelected(Category target) {
+    private boolean isUnselectable(Category target) {
         int count = (int) categories.stream()
                 .filter(category -> category == target)
                 .count();
